@@ -4,8 +4,8 @@
   "private": true,
   "proxy": "http://localhost:1337",
   "devDependencies": {
-    "react-native-scripts": "1.14.0",
     "jest-expo": "~27.0.0",
+    "react-native-scripts": "^1.14.1",
     "react-test-renderer": "16.3.1"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
@@ -27,9 +27,12 @@
     "body-parser": "^1.18.3",
     "expo": "^27.0.1",
     "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^5.2.6",
     "react": "16.3.1",
     "react-native": "~0.55.2",
     "react-native-vector-icons": "^5.0.0",
-    "react-navigation": "^2.11.2"
+    "react-navigation": "^2.11.2",
+    "request": "^2.87.0"
   }
 }
