@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, StatusBar, View, Text, TouchableOpacity, ListView, AsyncStorage, TextInput, Image } from 'react-native';
+import { StyleSheet, StatusBar, View, Text, TouchableOpacity, ListView, AsyncStorage, TextInput, Image, TouchableWithoutFeedback } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import Button from 'apsl-react-native-button';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { Ionicons } from '@expo/vector-icons';
 import MapScreen from './map.js';
 import LottieView from 'lottie-react-native';
+import * as Animatable from 'react-native-animatable';
 
 console.disableYellowBox = true;
 
@@ -69,6 +70,32 @@ class ChooseSportScreen extends React.Component {
     title: ""
   };
 
+  handleViewRef1 = ref => this.view1 = ref;
+  handleViewRef2 = ref => this.view2 = ref;
+  handleViewRef3 = ref => this.view3 = ref;
+  handleViewRef4 = ref => this.view4 = ref;
+  handleViewRef5 = ref => this.view5 = ref;
+  handleViewRef6 = ref => this.view6 = ref;
+  handleViewRef7 = ref => this.view7 = ref;
+
+  slide1 = () => this.view1.slideInLeft(600);
+  slide2 = () => this.view2.slideInRight(600);
+  slide3 = () => this.view3.slideInLeft(600);
+  slide4 = () => this.view4.slideInRight(600);
+  slide5 = () => this.view5.slideInLeft(600);
+  slide6 = () => this.view6.slideInRight(600);
+  slide7 = () => this.view7.slideInLeft(600);
+
+  componentDidMount() {
+    this.slide1();
+    this.slide2();
+    this.slide3();
+    this.slide4();
+    this.slide5();
+    this.slide6();
+    this.slide7();
+  }
+
   handleSport(sport) {
     AsyncStorage.setItem('event', JSON.stringify({
       sport: sport.toLowerCase()
@@ -87,15 +114,17 @@ class ChooseSportScreen extends React.Component {
           style={{flex: 1}}
           renderRow={(rowData)=>(
             <TouchableOpacity onPress={() => this.handleSport(rowData.sport)} activeOpacity={0.7}>
-              <View style={{padding: 15, flex: 1, alignItems: "center", backgroundColor: "#272727"}}>
-                  <Text style={{fontSize: 20, color: "white"}}>{rowData.sport}</Text>
-                  <Ionicons style={{fontSize: 60, color: "white"}} name={rowData.name}></Ionicons>
-              </View>
+              <Animatable.View ref={rowData.handle}>
+                <View style={{padding: 15, flex: 1, alignItems: "center", backgroundColor: "#272727"}}>
+                    <Text style={{fontSize: 20, color: "white"}}>{rowData.sport}</Text>
+                    <Ionicons style={{fontSize: 60, color: "white"}} name={rowData.name}></Ionicons>
+                </View>
+              </Animatable.View>
             </TouchableOpacity>
           )}
-          dataSource={dataSource.cloneWithRows([{ sport: "Soccer", name: "ios-football"},{ sport: "Basketball", name: "ios-basketball"},
-        { sport: "Baseball", name: "ios-baseball"},{sport: "Tennis", name: "ios-tennisball"},{ sport: "Frisbee", name: "ios-disc"},
-          { sport: "Football", name: "ios-american-football"},{ sport: "Bicycling", name: "ios-bicycle"}])}
+          dataSource={dataSource.cloneWithRows([{ sport: "Soccer", name: "ios-football", handle: this.handleViewRef1},{ sport: "Basketball", name: "ios-basketball", handle: this.handleViewRef2},
+        { sport: "Baseball", name: "ios-baseball", handle: this.handleViewRef3},{sport: "Tennis", name: "ios-tennisball", handle: this.handleViewRef4},{ sport: "Frisbee", name: "ios-disc", handle: this.handleViewRef5},
+          { sport: "Football", name: "ios-american-football", handle: this.handleViewRef6},{ sport: "Bicycling", name: "ios-bicycle", handle: this.handleViewRef7}])}
           renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
         />
       </View>
@@ -337,6 +366,35 @@ class SuccessScreen extends React.Component {
  }
 }
 
+class TestScreen extends React.Component {
+  handleViewRef = ref => this.view = ref;
+  handleViewRef2 = ref => this.view2 = ref;
+
+  bounce = () => this.view.slideInLeft(800);
+  bounce2 = () => this.view2.slideInRight(800);
+
+  componentDidMount() {
+    this.bounce();
+    this.bounce2();
+  }
+
+  render() {
+    return (
+      <View>
+        <Animatable.View ref={this.handleViewRef}>
+          <Button>
+            <Text>Bounce me!</Text>
+          </Button>
+        </Animatable.View>
+        <Animatable.View ref={this.handleViewRef2}>
+          <Button>
+            <Text>Bounce me!</Text>
+          </Button>
+        </Animatable.View>
+      </View>
+    );
+  }
+}
 
 export default createStackNavigator(
   {
@@ -364,6 +422,9 @@ export default createStackNavigator(
     Map: {
       screen: MapScreen,
     },
+    Test: {
+      screen: TestScreen
+    }
   },
   {
     initialRouteName: 'Welcome',
