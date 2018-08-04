@@ -32,9 +32,9 @@ app.use(bodyParser.urlencoded({extended: false }));
 
 
 // DO NOT REMOVE THIS LINE :)
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+// app.get('/', function (req, res) {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
 
 
@@ -58,38 +58,39 @@ app.post('/createEvent', function(req, res){
   let long;
   if(req.body.address){
     console.log(req.body.address);
-    
+    console.log(234);
     let url = "https://maps.googleapis.com/maps/api/geocode/json?address="+ req.body.address.street.split(' ').join('+') +
      ",+" + req.body.address.city.split(' ').join('+') +
-      ",+" + req.body.address.state.split(' ').join('+') + 
+      ",+" + req.body.address.state.split(' ').join('+') +
       "&key="+ process.env.GOOGLE_API_KEY;
-     
+
     request(url, function (error, response, body) {
       if(error){
         return res.json({
           success:false
         })
-      }else{    
+      }else{
         let parseBody = JSON.parse(body);
         lat = parseBody.results[0].geometry.location.lat;
         long = parseBody.results[0].geometry.location.lng;
       }
-      
+
       saveEvent(req.body.sport, lat, long, req.body.startTime, req.body.endTime);
       res.json({
         success: true
       });
     });
-   
+
   }else{
     lat = req.body.latitude;
     long = req.body.longitude;
     saveEvent(req.body.sport, lat, long, req.body.startTime, req.body.endTime);
+    console.log('hi');
     res.json({
       success: true
     });
   }
-  
+
 })
 
 //GET all events
